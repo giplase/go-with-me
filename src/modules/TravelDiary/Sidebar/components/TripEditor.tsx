@@ -43,8 +43,8 @@ export default function TripEditor({
         const trip: Omit<Trip, "id"> = {
           name,
           description: markdownRef.current?.getMarkdown() ?? "",
-          tripStartDate: tripStartDate,
-          tripEndDate: tripEndDate,
+          tripStartDate: tripStartDate ? tripStartDate : null,
+          tripEndDate: tripEndDate ? tripEndDate : null,
           latitude: currentMarker.location[1],
           longitude: currentMarker.location[0],
           isVisited: !isPlanned,

@@ -19,7 +19,7 @@ export interface MarkersManagerContextInterface {
   focusMarker: (id: number) => void
   unFocusMarker: () => void
   startEditing: (id?: number) => number
-  finishEditing?: () => void
+  finishEditing?: (focusedId?: number) => void
   updateMarkerData?: (id: number, newData: Partial<Omit<Marker, "id">>) => void
   isLoading: boolean
 }
@@ -72,7 +72,7 @@ export default function MarkersManagerProvider({ children }: { children: ReactNo
     return currentId
   }
 
-  const finishEditing = () => {
+  const finishEditing = (focusedId?: number) => {
     setIsEditing(false)
     startTransition(async () => {
       const { data, errorMessage } = await getAllUserMarkers()
@@ -82,9 +82,9 @@ export default function MarkersManagerProvider({ children }: { children: ReactNo
       }
       setInternalMarkers(data)
       setMarkers(setMarkersByMode(data, displayMode))
-      if (focusedMarkerId && data) {
-        const currentMarker = data.find((marker) => marker.id === focusedMarkerId)
-        if (currentMarker) updateMarkerData(focusedMarkerId, { location: currentMarker.location })
+      if (focusedId && data) {
+        const currentMarker = data.find((marker) => marker.id === focusedId)
+        if (currentMarker) updateMarkerData(focusedId, { location: currentMarker.location })
       }
     })
   }

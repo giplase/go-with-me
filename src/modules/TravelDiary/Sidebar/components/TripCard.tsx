@@ -7,8 +7,16 @@ import { addTrip, getTripById, updateTrip } from "../api/sidebarApi"
 import TripEditor from "./TripEditor"
 
 export default function TripCard() {
-  const { isEditing, focusedMarkerId, markers, startEditing, finishEditing, unFocusMarker, focusMarker } =
-    useMarkersManagerContext()
+  const {
+    isEditing,
+    focusedMarkerId,
+    markers,
+    startEditing,
+    finishEditing,
+    unFocusMarker,
+    focusMarker,
+    updateMarkerData,
+  } = useMarkersManagerContext()
 
   const newTrip = {
     description: "Здесь вы можете написать о поездке, впечатлениях, интересных местах.",
@@ -61,7 +69,11 @@ export default function TripCard() {
           <div className="flex w-full justify-between gap-2.5">
             <div className="text-text-sub flex items-center gap-2.5">
               <CalendarIcon />
-              <span>{`${tripData.tripStartDate?.split("-").reverse().join(".")} – ${tripData.tripEndDate?.split("-").reverse().join(".")}`}</span>
+              <span>
+                {tripData.tripStartDate || tripData.tripEndDate
+                  ? `${tripData.tripStartDate ? tripData.tripStartDate.split("-").reverse().join(".") : "?"} – ${tripData.tripEndDate ? tripData.tripEndDate.split("-").reverse().join(".") : "?"}`
+                  : "Даты не указаны"}
+              </span>
             </div>
           </div>
 
@@ -97,8 +109,8 @@ export default function TripCard() {
                 }
                 focusMarker(savedTrip.id)
                 setTripData(savedTrip)
+                if (finishEditing) finishEditing(savedTrip.id)
               }
-              if (finishEditing) finishEditing()
             })
           }}
         />
