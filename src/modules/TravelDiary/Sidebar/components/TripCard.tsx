@@ -5,19 +5,10 @@ import { Trip } from "../types/Trip"
 import MarkdownViewer from "./MarkdownViewer"
 import { addTrip, getTripById, updateTrip } from "../api/sidebarApi"
 import TripEditor from "./TripEditor"
-import { getLocationTitleByLngLat } from "../../YandexMap"
 
 export default function TripCard() {
-  const {
-    isEditing,
-    focusedMarkerId,
-    markers,
-    startEditing,
-    finishEditing,
-    unFocusMarker,
-    focusMarker,
-    updateMarkerData,
-  } = useMarkersManagerContext()
+  const { isEditing, focusedMarkerId, markers, startEditing, finishEditing, unFocusMarker, focusMarker } =
+    useMarkersManagerContext()
 
   const newTrip = {
     description: "Здесь вы можете написать о поездке, впечатлениях, интересных местах.",
@@ -49,7 +40,6 @@ export default function TripCard() {
   }, [focusedMarkerId])
 
   const currentMarker = markers.find((marker) => marker.id === focusedMarkerId)
-  console.log(currentMarker)
 
   return (
     <div className="bg-background text-text-main w-full">

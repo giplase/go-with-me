@@ -1,7 +1,7 @@
 "use client"
-import { startTransition, useState } from "react"
+import { useState } from "react"
 import { useMarkersManagerContext } from "../../MarkersManager"
-import { getLocationTitleByLngLat, useYmapsContext } from "../../YandexMap"
+import { useYmapsContext } from "../../YandexMap"
 import { Icon, Marker } from "../types/Marker"
 import { LngLat } from "ymaps3"
 
@@ -29,10 +29,6 @@ export default function MapMarker({ marker }: { marker: Marker }) {
         onDragEnd={(coordinates) => {
           if (updateMarkerData) {
             updateMarkerData(marker.id, { location: coordinates })
-            startTransition(async () => {
-              const { data } = await getLocationTitleByLngLat(coordinates)
-              if (data) updateMarkerData(marker.id, { locationName: data })
-            })
           }
         }}
       >

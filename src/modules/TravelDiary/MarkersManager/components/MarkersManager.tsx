@@ -2,7 +2,6 @@
 import { createContext, ReactNode, useContext, useEffect, useRef, useState, useTransition } from "react"
 import { Icon, Marker, MarkerMode } from "../../Markers"
 import { useYmapsContext } from "../../YandexMap"
-import { LngLat } from "ymaps3"
 import { getLocationTitleByLngLat } from "../../YandexMap"
 import { getAllUserMarkers } from "../api/markersManagerApi"
 

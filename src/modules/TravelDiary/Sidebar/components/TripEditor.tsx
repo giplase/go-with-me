@@ -17,7 +17,6 @@ export default function TripEditor({
   currentMarker: Marker
   saveData: (tripToSave: Omit<Trip, "id">) => void
 }) {
-  const [error, setError] = useState<string | undefined>(undefined)
   const markdownRef = useRef<MDXEditorMethods>(null)
   const { isEditing, focusedMarkerId, finishEditing, unFocusMarker, updateMarkerData } = useMarkersManagerContext()
   const [nameError, setNameError] = useState(false)
@@ -108,9 +107,8 @@ export default function TripEditor({
                 </Tooltip.Trigger>
               )}
               <input
-                className={`bg-foreground border-border text-text-sub w-55 rounded-md border-2 p-2 scheme-dark outline-none ${dateError ? "border-warning" : ""}`}
+                className={`bg-foreground border-border w-55 rounded-md border-2 p-2 uppercase scheme-dark outline-none ${dateError ? "border-warning" : ""}`}
                 type="date"
-                placeholder="Дата начала"
                 name="tripStartDate"
                 defaultValue={tripData.tripStartDate?.toString()}
               />
@@ -128,9 +126,8 @@ export default function TripEditor({
                 </Tooltip.Trigger>
               )}
               <input
-                className={`bg-foreground border-border text-text-sub w-55 rounded-md border-2 p-2 scheme-dark outline-none ${dateError ? "border-warning" : ""}`}
+                className={`bg-foreground border-border w-55 rounded-md border-2 p-2 uppercase scheme-dark outline-none ${dateError ? "border-warning" : ""}`}
                 type="date"
-                placeholder="Дата окончания"
                 name="tripEndDate"
                 defaultValue={tripData.tripEndDate?.toString()}
               />
@@ -187,7 +184,6 @@ export default function TripEditor({
           Сохранить
         </button>
       </div>
-      {error && <p className="">{error}</p>}
     </form>
   )
 }

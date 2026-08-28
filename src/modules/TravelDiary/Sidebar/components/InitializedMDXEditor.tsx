@@ -28,7 +28,7 @@ export default function InitializedMDXEditor({
     <MDXEditor
       {...props}
       ref={editorRef}
-      className="dark-theme go-with-me-editor"
+      className="dark-theme markdown-editor"
       contentEditableClassName="prose prose-invert max-w-none"
       plugins={[
         headingsPlugin(),

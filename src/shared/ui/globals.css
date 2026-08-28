@@ -1,0 +1,125 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "@yandex/ymaps3-default-ui-theme/dist/esm/index.css";
+:root {
+}
+
+@theme inline {
+  --color-background: #152142;
+  --color-foreground: #33375f;
+  --color-text-main: #ffffff;
+  --color-text-sub: #ffffff80;
+  --color-border: #43426f;
+  --color-hover: #282e54;
+  --color-accent: #ff984a;
+  --color-warning: #ff744a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+html,
+body {
+  background: #152142;
+  color: #171717;
+}
+
+@utility prose-invert {
+  --tw-prose-body: #152142;
+  --tw-prose-headings: #ffffff;
+  --tw-prose-bold: #ffffff;
+  --tw-prose-links: #ff984a;
+  --tw-prose-quotes: #7d7cb8;
+  --tw-prose-quote-borders: #7d7cb8;
+  --tw-prose-hr: #43426f;
+  --tw-prose-bullets: #ffffff80;
+  --tw-prose-counters: #ffffff80;
+  --tw-prose-code: #ff984a;
+  --tw-prose-pre-bg: #282e54;
+}
+
+.markdown-editor,
+.markdown-editor.mdxeditor-popup-container {
+  --accentBorder: #ff984a;
+  --accentSolid: #ff984a !important;
+  --accentSolidHover: #ff984a;
+  --accentTextContrast: #ffffff;
+  --baseBase: #152142;
+  --baseBg: #282e54;
+  --baseBgHover: #43426f;
+  --baseBgActive: #43426f;
+  --baseLine: #43426f;
+  --baseBorder: #5a5990;
+  --baseBorderHover: #5a5990;
+  --baseSolidHover: #7d7cb8;
+  --baseText: #ffffff;
+  --basePageBg: #152142;
+  color: var(--baseText);
+  background: var(--basePageBg);
+  font-family: var(--font-varela, "Varela", sans-serif);
+}
+.markdown-editor .mdxeditor-toolbar {
+  background-color: #43426f;
+  border-bottom: 1px solid #43426f;
+  border-radius: 0;
+}
+.markdown-editor .mdxeditor-root-contenteditable {
+  background-color: #33375f;
+  border: none;
+  border-radius: 0;
+  color: #ffffff;
+  min-height: calc(100vh - 24rem);
+  max-height: calc(100vh - 24rem);
+  overflow-y: auto;
+}
+.markdown-editor .mdxeditor-select-content {
+  background-color: #43426f;
+  color: #ffffff;
+  border: 1px solid #43426f;
+  border-radius: 0.5rem;
+}
+.markdown-editor .mdxeditor-select-content [data-highlighted],
+.markdown-editor .mdxeditor-select-content [data-state="checked"] {
+  background-color: #282e54;
+  color: #ffffff;
+}
+.mdxeditor-popup-container.markdown-editor {
+  z-index: 10000;
+}
+.markdown-editor .mdxeditor-toolbar button:hover,
+.markdown-editor .mdxeditor-toolbar [data-toolbar-item]:hover {
+  background-color: #282e54;
+}
+.prose li[role="checkbox"]::before {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.prose li[role="checkbox"]::after {
+  top: 35%;
+}
+.markdown-editor .mdxeditor-toolbar [data-toolbar-item][aria-label] {
+  background-color: #282e54;
+  color: #ffffff;
+}
+.markdown-editor {
+  scrollbar-width: thin;
+  scrollbar-color: #43426f #282e54;
+}
+.markdown-editor::-webkit-scrollbar {
+  width: 8px;
+}
+.markdown-editor::-webkit-scrollbar-track {
+  background: #282e54;
+  border-radius: 4px;
+}
+.markdown-editor::-webkit-scrollbar-thumb {
+  background: #43426f;
+  border-radius: 4px;
+}
+.markdown-editor::-webkit-scrollbar-thumb:hover {
+  background: #5a5990;
+}
