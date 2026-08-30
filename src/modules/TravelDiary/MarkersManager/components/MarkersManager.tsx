@@ -17,20 +17,19 @@ export interface MarkersManagerContextInterface {
   focusedMarkerId?: number
   updateDisplayMode: (mode: DisplayMode) => void
   focusMarker: (id: number) => void
-  unFocusMarker: () => void
+  unfocusMarker: () => void
   startEditing: (id?: number) => number
   finishEditing?: (focusedId?: number) => void
   updateMarkerData?: (id: number, newData: Partial<Omit<Marker, "id">>) => void
   isLoading: boolean
+  isPendingUpdateLocName: boolean
 }
-
-const ZOOM = 9
 
 export const MarkersManagerContext = createContext<MarkersManagerContextInterface | null>(null)
 
 export default function MarkersManagerProvider({ children }: { children: ReactNode }) {
   const ymapsContextValue = useYmapsContext()
-  const [isPending, startTransition] = useTransition()
+  const [isLoading, startTransition] = useTransition()
   const [isPendingUpdateLocName, startUpdateLocNameTransition] = useTransition()
 
   const [internalMarkers, setInternalMarkers] = useState<Marker[]>([]) // All user markers
@@ -40,11 +39,9 @@ export default function MarkersManagerProvider({ children }: { children: ReactNo
   const [displayMode, setDisplayMode] = useState<DisplayMode>(DisplayMode.All)
 
   const [isEditing, setIsEditing] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const tempIdRef = useRef(0)
 
   const startEditing = (id?: number) => {
-    // const currentId = id ?? -Date.now()
     const currentId = id ?? --tempIdRef.current
     if (!id && ymapsContextValue?.mapRef.current) {
       const [lng, lat] = ymapsContextValue.mapRef.current.center
@@ -58,7 +55,7 @@ export default function MarkersManagerProvider({ children }: { children: ReactNo
           mode: MarkerMode.Visited,
         },
       ])
-      startTransition(async () => {
+      startUpdateLocNameTransition(async () => {
         const { data } = await getLocationTitleByLngLat([lng, lat])
         if (data) updateMarkerData(currentId, { locationName: data })
       })
@@ -74,6 +71,7 @@ export default function MarkersManagerProvider({ children }: { children: ReactNo
 
   const finishEditing = (focusedId?: number) => {
     setIsEditing(false)
+    setMarkers(filterMarkersByMode(internalMarkers, displayMode))
     startTransition(async () => {
       const { data, errorMessage } = await getAllUserMarkers()
       if (errorMessage || !data) {
@@ -81,7 +79,7 @@ export default function MarkersManagerProvider({ children }: { children: ReactNo
         return
       }
       setInternalMarkers(data)
-      setMarkers(setMarkersByMode(data, displayMode))
+      setMarkers(filterMarkersByMode(data, displayMode))
       if (focusedId && data) {
         const currentMarker = data.find((marker) => marker.id === focusedId)
         if (currentMarker) updateMarkerData(focusedId, { location: currentMarker.location })
@@ -91,10 +89,10 @@ export default function MarkersManagerProvider({ children }: { children: ReactNo
 
   const updateDisplayMode = (displayMode: DisplayMode) => {
     setDisplayMode(displayMode)
-    setMarkers(setMarkersByMode(internalMarkers, displayMode))
+    setMarkers(filterMarkersByMode(internalMarkers, displayMode))
   }
 
-  const setMarkersByMode = (markersList: Marker[], displayMode: DisplayMode) => {
+  const filterMarkersByMode = (markersList: Marker[], displayMode: DisplayMode) => {
     switch (displayMode) {
       case DisplayMode.All:
         return markersList
@@ -118,9 +116,9 @@ export default function MarkersManagerProvider({ children }: { children: ReactNo
     }
   }
 
-  const unFocusMarker = () => {
+  const unfocusMarker = () => {
     setFocusedMarkerId(undefined)
-    ymapsContextValue?.unFocusLocation()
+    ymapsContextValue?.unfocusLocation()
   }
 
   const updateMarkerData = (id: number, newData: Partial<Omit<Marker, "id">>) => {
@@ -156,11 +154,12 @@ export default function MarkersManagerProvider({ children }: { children: ReactNo
         focusedMarkerId,
         updateDisplayMode,
         focusMarker,
-        unFocusMarker,
+        unfocusMarker,
         startEditing,
         updateMarkerData: isEditing ? updateMarkerData : undefined,
         finishEditing: isEditing ? finishEditing : undefined,
         isLoading,
+        isPendingUpdateLocName,
       }}
     >
       {children}
@@ -170,17 +169,19 @@ export default function MarkersManagerProvider({ children }: { children: ReactNo
 
 export function useMarkersManagerContext() {
   const markersManagerContextValue = useContext(MarkersManagerContext)
-  if (markersManagerContextValue === null) throw new Error("YmapsContext is null")
+  if (markersManagerContextValue === null)
+    throw new Error("MarkersManagerContext is null because the function was called outside the context")
   return {
     markers: markersManagerContextValue.markers,
     isEditing: markersManagerContextValue.isEditing,
     focusedMarkerId: markersManagerContextValue.focusedMarkerId,
     updateDisplayMode: markersManagerContextValue.updateDisplayMode,
     focusMarker: markersManagerContextValue.focusMarker,
-    unFocusMarker: markersManagerContextValue.unFocusMarker,
+    unfocusMarker: markersManagerContextValue.unfocusMarker,
     startEditing: markersManagerContextValue.startEditing,
     updateMarkerData: markersManagerContextValue.updateMarkerData,
     finishEditing: markersManagerContextValue.finishEditing,
     isLoading: markersManagerContextValue.isLoading,
+    isPendingUpdateLocName: markersManagerContextValue.isPendingUpdateLocName,
   }
 }

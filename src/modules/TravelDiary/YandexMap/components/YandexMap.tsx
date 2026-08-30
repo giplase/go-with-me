@@ -6,7 +6,8 @@ import { YMapReactContainer } from "@yandex/ymaps3-types/imperative/YMapReactCon
 import { LngLat, YMap, YMapCenterZoomLocation } from "ymaps3"
 import React from "react"
 import ReactDOM from "react-dom"
-import { MAP_CUSTOMIZATION } from "../lib/map-customization"
+import { MAP_CUSTOMIZATION } from "../themes/map-customization"
+import TravelExploreIcon from "@/shared/icons/TravelExploreIcon"
 const ZOOM = 9
 
 const LOCATION: YMapCenterZoomLocation = {
@@ -28,7 +29,12 @@ export interface YmapsInterface {
 export interface YmapsContextInterface extends YmapsInterface {
   mapRef: RefObject<YMap | null>
   focusLocation: (coords: LngLat) => void
-  unFocusLocation: () => void
+  unfocusLocation: () => void
+}
+
+function CalcDLang(mapRefCurrent: YMap, lat: number, zoom: number) {
+  const width = mapRefCurrent.size.x
+  return (360 * width) / (256 * 2 ** zoom * Math.cos((lat * Math.PI) / 180))
 }
 
 const YmapsContext = createContext<YmapsContextInterface | null>(null)
@@ -39,8 +45,7 @@ export default function YmapsContextProvider({ children }: { children: ReactNode
 
   const focusLocation = (coords: LngLat) => {
     if (mapRef.current) {
-      const width = mapRef.current.size.x
-      const dLng = (360 * width) / (256 * 2 ** ZOOM * Math.cos((coords[1] * Math.PI) / 180))
+      const dLng = CalcDLang(mapRef.current, coords[1], ZOOM)
       const center: LngLat = [coords[0] + dLng / 12, coords[1]]
       mapRef.current?.update({
         location: { center: center, zoom: ZOOM, duration: 600, easing: "ease-in-out" },
@@ -48,12 +53,11 @@ export default function YmapsContextProvider({ children }: { children: ReactNode
     }
   }
 
-  const unFocusLocation = () => {
+  const unfocusLocation = () => {
     if (mapRef.current) {
       const [centerLng, centerLat] = mapRef.current.center
-      const width = mapRef.current.size.x
       const zoom = mapRef.current.zoom
-      const dLng = (360 * width) / (256 * 2 ** zoom * Math.cos((centerLat * Math.PI) / 180))
+      const dLng = CalcDLang(mapRef.current, centerLat, zoom)
       const newCenter: LngLat = [centerLng - dLng / 12, centerLat]
       mapRef.current.update({
         location: { center: newCenter, zoom: zoom, duration: 600, easing: "ease-in-out" },
@@ -78,7 +82,7 @@ export default function YmapsContextProvider({ children }: { children: ReactNode
         ...ymapsModules,
         mapRef,
         focusLocation,
-        unFocusLocation,
+        unfocusLocation,
       }}
     >
       {ymapsModules.reactified && ymapsModules.reactify && (
@@ -97,20 +101,27 @@ export default function YmapsContextProvider({ children }: { children: ReactNode
           </ymapsModules.reactified.YMap>
         </div>
       )}
+      {!ymapsModules.reactified && (
+        <div className="flex h-screen w-screen items-center justify-center">
+          <div className="animate-pulse">
+            <TravelExploreIcon />
+          </div>
+        </div>
+      )}
     </YmapsContext>
   )
 }
 
 export function useYmapsContext() {
   const ymapsContextValue = useContext(YmapsContext)
-  if (ymapsContextValue === null) throw new Error("YmapsContext is null")
-  if (!ymapsContextValue.reactify || !ymapsContextValue.reactified) return null
+  if (ymapsContextValue === null)
+    throw new Error("YmapsContext is null because the function was called outside the context")
+  if (!ymapsContextValue.reactified) return null
   return {
-    reactify: ymapsContextValue.reactify,
     YMap: ymapsContextValue.reactified.YMap,
     YMapMarker: ymapsContextValue.reactified.YMapMarker,
     mapRef: ymapsContextValue.mapRef,
     focusLocation: ymapsContextValue.focusLocation,
-    unFocusLocation: ymapsContextValue.unFocusLocation,
+    unfocusLocation: ymapsContextValue.unfocusLocation,
   }
 }

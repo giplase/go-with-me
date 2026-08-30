@@ -5,6 +5,8 @@ import { Trip } from "../types/Trip"
 import MarkdownViewer from "./MarkdownViewer"
 import { addTrip, getTripById, updateTrip } from "../api/sidebarApi"
 import TripEditor from "./TripEditor"
+import CalendarIcon from "@/shared/icons/CalendarIcon"
+import TripCardHeader from "./TripCardHeader"
 
 export default function TripCard() {
   const {
@@ -13,9 +15,9 @@ export default function TripCard() {
     markers,
     startEditing,
     finishEditing,
-    unFocusMarker,
+    unfocusMarker,
     focusMarker,
-    updateMarkerData,
+    isPendingUpdateLocName,
   } = useMarkersManagerContext()
 
   const newTrip = {
@@ -28,6 +30,10 @@ export default function TripCard() {
   }
   const [tripData, setTripData] = useState<Omit<Trip, "id" | "latitude" | "longitude">>(newTrip)
   const [isPending, startTransition] = useTransition()
+
+  function formatDate(date: string) {
+    return date.split("-").reverse().join(".")
+  }
 
   useEffect(() => {
     if (focusedMarkerId && focusedMarkerId > 0) {
@@ -51,39 +57,43 @@ export default function TripCard() {
 
   return (
     <div className="bg-background text-text-main w-full">
+      <TripCardHeader
+        isPendingUpdateLocName={isPendingUpdateLocName}
+        locationName={currentMarker?.locationName}
+        onClick={() => {
+          if (isEditing && finishEditing) finishEditing()
+          unfocusMarker()
+        }}
+      />
       {!isEditing && tripData && (
         <div className="flex w-full flex-col gap-4 text-sm">
-          <div className="flex w-full items-center justify-between gap-2.5">
-            <span className="text-text-sub truncate">{currentMarker?.locationName}</span>
-            <button
-              className="w-fit cursor-pointer"
-              onClick={() => {
-                if (isEditing && finishEditing) finishEditing()
-                unFocusMarker()
-              }}
-            >
-              <CloseIcon />
-            </button>
-          </div>
-          <h1 className="text-xl">{tripData.name}</h1>
+          {!isPending && <h1 className="text-xl">{tripData.name}</h1>}
+          {isPending && <h1 className="bg-pending h-7 w-100 animate-pulse rounded-md"></h1>}
           <div className="flex w-full justify-between gap-2.5">
             <div className="text-text-sub flex items-center gap-2.5">
               <CalendarIcon />
-              <span>
-                {tripData.tripStartDate || tripData.tripEndDate
-                  ? `${tripData.tripStartDate ? tripData.tripStartDate.split("-").reverse().join(".") : "?"} – ${tripData.tripEndDate ? tripData.tripEndDate.split("-").reverse().join(".") : "?"}`
-                  : "Даты не указаны"}
-              </span>
+              {!isPending && (
+                <span>
+                  {tripData.tripStartDate || tripData.tripEndDate
+                    ? `${tripData.tripStartDate ? formatDate(tripData.tripStartDate) : "?"} – ${tripData.tripEndDate ? formatDate(tripData.tripEndDate) : "?"}`
+                    : "Даты не указаны"}
+                </span>
+              )}
+              {isPending && <span className="bg-pending h-5 w-45 animate-pulse rounded-md"></span>}
             </div>
           </div>
 
-          <div className="border-border overflow-hidden rounded-md border-2">
-            <MarkdownViewer markdown={tripData.description} />
-          </div>
+          {!isPending && (
+            <div className="border-border overflow-hidden rounded-md border-2">
+              <MarkdownViewer markdown={tripData.description} />
+            </div>
+          )}
+          {isPending && <div className="bg-pending h-[calc(100vh-23rem)] w-full animate-pulse rounded-md"></div>}
           <div className="flex w-full justify-center gap-2.5">
             <button
               type="submit"
-              className="hover:bg-foreground active:bg-border border-border w-fit cursor-pointer rounded-md border-2 px-10 py-2 outline-none"
+              disabled={isPending}
+              className="hover:bg-foreground active:bg-border border-border w-fit cursor-pointer rounded-md border-2 px-10 py-2 outline-none disabled:cursor-auto disabled:hover:bg-transparent"
               onClick={() => startEditing(focusedMarkerId)}
             >
               Редактировать
@@ -94,6 +104,7 @@ export default function TripCard() {
       {isEditing && tripData && currentMarker && (
         <TripEditor
           tripData={tripData}
+          isPending={isPending}
           currentMarker={currentMarker}
           saveData={(tripToSave: Omit<Trip, "id">) => {
             startTransition(async () => {
@@ -116,104 +127,5 @@ export default function TripCard() {
         />
       )}
     </div>
-  )
-}
-
-function CloseIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z"
-        fill="#ffffff80"
-      />
-    </svg>
-  )
-}
-
-function CalendarIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M8 2V5"
-        stroke="white"
-        strokeWidth="2"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M16 2V5"
-        stroke="white"
-        strokeWidth="2"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        opacity="0.4"
-        d="M3.5 9.08984H20.5"
-        stroke="white"
-        strokeWidth="2"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-        stroke="white"
-        strokeWidth="2"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        opacity="0.4"
-        d="M15.6946 13.7002H15.705"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        opacity="0.4"
-        d="M15.6946 16.7002H15.705"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        opacity="0.4"
-        d="M11.9956 13.7002H12.0061"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        opacity="0.4"
-        d="M11.9956 16.7002H12.0061"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        opacity="0.4"
-        d="M8.29419 13.7002H8.30463"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        opacity="0.4"
-        d="M8.29395 16.7002H8.30439"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   )
 }

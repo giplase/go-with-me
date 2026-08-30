@@ -1,2 +1,1 @@
-export { default as MarkersManagerProvider } from "./components/MarkersManager"
-export { useMarkersManagerContext, DisplayMode } from "./components/MarkersManager"
+export { default as MarkersManagerProvider, useMarkersManagerContext, DisplayMode } from "./components/MarkersManager"

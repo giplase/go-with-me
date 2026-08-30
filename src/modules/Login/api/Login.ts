@@ -1,7 +1,11 @@
 import { createClient } from "@/shared/supabase/client"
-import { Form } from "@base-ui/react"
 
-export async function signInWithEmail(formValues: Form.Values) {
+export type LoginFields = {
+  login: string
+  password: string
+}
+
+export async function signInWithEmail(formValues: LoginFields) {
   const supabase = createClient()
   const response = await supabase.auth.signInWithPassword({
     email: formValues.login,

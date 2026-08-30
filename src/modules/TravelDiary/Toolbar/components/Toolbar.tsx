@@ -1,4 +1,3 @@
-"use client"
 import ModeToggleGroup from "./ModeToggleGroup"
 import Search from "./Search"
 

@@ -1,3 +1,4 @@
+"use client"
 import { Toggle, ToggleGroup, Toolbar } from "@base-ui/react"
 import { DisplayMode, useMarkersManagerContext } from "../../MarkersManager"
 import { useYmapsContext } from "../../YandexMap"
@@ -28,22 +29,25 @@ export default function ModeToggleGroup() {
       >
         <Toolbar.Button
           render={<Toggle />}
+          disabled={markersManagerContextValue.isLoading}
           value={"Planned"}
-          className="active:bg-border data-pressed:bg-border hover:bg-hover flex cursor-pointer items-center justify-center rounded-tl-sm rounded-bl-sm p-1.5"
+          className={`data-pressed:bg-border hover:bg-hover flex items-center justify-center rounded-tl-sm rounded-bl-sm p-1.5 ${markersManagerContextValue.isLoading ? "cursor-auto hover:bg-transparent" : "active:bg-border cursor-pointer"}`}
         >
           <PlannedPlaceIcon />
         </Toolbar.Button>
         <Toolbar.Button
           render={<Toggle />}
+          disabled={markersManagerContextValue.isLoading}
           value={"Visited"}
-          className="active:bg-border data-pressed:bg-border hover:bg-hover flex cursor-pointer items-center justify-center rounded-tr-sm rounded-br-sm p-1.5"
+          className={`data-pressed:bg-border hover:bg-hover flex items-center justify-center rounded-tr-sm rounded-br-sm p-1.5 ${markersManagerContextValue.isLoading ? "cursor-auto hover:bg-transparent" : "active:bg-border cursor-pointer"}`}
         >
           <VisitedPlaceIcon />
         </Toolbar.Button>
       </ToggleGroup>
       <ToggleGroup className="border-border flex items-center rounded-lg border-3">
         <Toolbar.Button
-          className="active:bg-border data-pressed:bg-border hover:bg-hover flex cursor-pointer items-center justify-center rounded-sm p-1.5"
+          disabled={markersManagerContextValue.isLoading}
+          className={`data-pressed:bg-border hover:bg-hover flex items-center justify-center rounded-sm p-1.5 ${markersManagerContextValue.isLoading ? "cursor-auto hover:bg-transparent" : "active:bg-border cursor-pointer"}`}
           onClick={() => {
             markersManagerContextValue.startEditing()
             ymapsContextValue?.focusLocation(ymapsContextValue.mapRef.current?.center as LngLat)

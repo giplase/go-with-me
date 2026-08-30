@@ -5,14 +5,14 @@ import { useMarkersManagerContext } from "../../MarkersManager"
 import TripCard from "./TripCard"
 
 export default function Sidebar() {
-  const { focusedMarkerId, isEditing, unFocusMarker, finishEditing } = useMarkersManagerContext()
+  const { focusedMarkerId, isEditing, unfocusMarker, finishEditing } = useMarkersManagerContext()
 
   return (
     <Drawer.Root
       open={!!focusedMarkerId}
       onOpenChange={(open) => {
         if (!open) {
-          unFocusMarker()
+          unfocusMarker()
           if (isEditing && finishEditing) finishEditing()
         }
       }}

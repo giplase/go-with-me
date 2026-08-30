@@ -2,14 +2,12 @@ import { MarkersList, MarkersManagerProvider, Sidebar, Toolbar, YmapsContextProv
 
 export default function MapPage() {
   return (
-    <>
-      <YmapsContextProvider>
-        <MarkersManagerProvider>
-          <MarkersList />
-          <Toolbar />
-          <Sidebar />
-        </MarkersManagerProvider>
-      </YmapsContextProvider>
-    </>
+    <YmapsContextProvider>
+      <MarkersManagerProvider>
+        <MarkersList />
+        <Toolbar />
+        <Sidebar />
+      </MarkersManagerProvider>
+    </YmapsContextProvider>
   )
 }
