@@ -1,0 +1,121 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "@yandex/ymaps3-default-ui-theme/dist/esm/index.css";
+
+@theme inline {
+  --color-background: #152142;
+  --color-login-background: #152142bd;
+  --color-login-form-background: #02061288;
+  --color-login-form-shadow: #0e1223;
+  --color-foreground: #33375f;
+  --color-text-main: #ffffff;
+  --color-text-sub: #ffffff80;
+  --color-border: #43426f;
+  --color-border-hover: #5a5990;
+  --color-hover: #282e54;
+  --color-accent: #ff984a;
+  --color-muted: #7d7cb8;
+  --color-warning: #ff744a;
+  --color-pending: #43426f66;
+}
+
+html,
+body {
+  background: theme(--color-background);
+  color: theme(--color-text-main);
+}
+
+@utility prose-invert {
+  --tw-prose-body: theme(--color-background);
+  --tw-prose-headings: theme(--color-text-main);
+  --tw-prose-bold: theme(--color-text-main);
+  --tw-prose-links: theme(--color-accent);
+  --tw-prose-quotes: theme(--color-muted);
+  --tw-prose-quote-borders: theme(--color-muted);
+  --tw-prose-hr: theme(--color-border);
+  --tw-prose-bullets: theme(--color-text-sub);
+  --tw-prose-counters: theme(--color-text-sub);
+  --tw-prose-code: theme(--color-accent);
+  --tw-prose-pre-bg: theme(--color-hover);
+}
+
+.markdown-editor,
+.markdown-editor.mdxeditor-popup-container {
+  --accentBorder: theme(--color-accent);
+  --accentSolid: theme(--color-accent) !important;
+  --accentSolidHover: theme(--color-accent);
+  --accentTextContrast: theme(--color-text-main);
+  --baseBase: theme(--color-background);
+  --baseBg: theme(--color-hover);
+  --baseBgHover: theme(--color-border);
+  --baseBgActive: theme(--color-border);
+  --baseLine: theme(--color-border);
+  --baseBorder: theme(--color-border-hover);
+  --baseBorderHover: theme(--color-border-hover);
+  --baseSolidHover: theme(--color-muted);
+  --baseText: theme(--color-text-main);
+  --basePageBg: theme(--color-background);
+  color: var(--baseText);
+  background: var(--basePageBg);
+  font-family: var(--font-varela, "Varela", sans-serif);
+}
+.markdown-editor .mdxeditor-toolbar {
+  background-color: theme(--color-border);
+  border-bottom: 1px solid theme(--color-border);
+  border-radius: 0;
+}
+.markdown-editor .mdxeditor-root-contenteditable {
+  background-color: theme(--color-foreground);
+  border: none;
+  border-radius: 0;
+  color: theme(--color-text-main);
+  height: calc(100vh - 24rem);
+  overflow-y: auto;
+}
+.markdown-editor .mdxeditor-select-content {
+  background-color: theme(--color-border);
+  color: theme(--color-text-main);
+  border: 1px solid theme(--color-border);
+  border-radius: 0.5rem;
+}
+.markdown-editor .mdxeditor-select-content [data-highlighted],
+.markdown-editor .mdxeditor-select-content [data-state="checked"] {
+  background-color: theme(--color-hover);
+  color: theme(--color-text-main);
+}
+.mdxeditor-popup-container.markdown-editor {
+  z-index: 10000;
+}
+.markdown-editor .mdxeditor-toolbar button:hover,
+.markdown-editor .mdxeditor-toolbar [data-toolbar-item]:hover {
+  background-color: theme(--color-hover);
+}
+.prose li[role="checkbox"]::before {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.prose li[role="checkbox"]::after {
+  top: 35%;
+}
+.markdown-editor .mdxeditor-toolbar [data-toolbar-item][aria-label] {
+  background-color: theme(--color-hover);
+  color: theme(--color-text-main);
+}
+.markdown-editor {
+  scrollbar-width: thin;
+  scrollbar-color: theme(--color-border) theme(--color-hover);
+}
+.markdown-editor::-webkit-scrollbar {
+  width: 8px;
+}
+.markdown-editor::-webkit-scrollbar-track {
+  background: theme(--color-hover);
+  border-radius: 4px;
+}
+.markdown-editor::-webkit-scrollbar-thumb {
+  background: theme(--color-border);
+  border-radius: 4px;
+}
+.markdown-editor::-webkit-scrollbar-thumb:hover {
+  background: theme(--color-border-hover);
+}
