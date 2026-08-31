@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Go With Me
 
-## Getting Started
+Интерактивный дневник путешествий. Отмечайте на карте места, которые хотите посетить или уже посетили, и ведите заметки о поездках в формате Markdown.
 
-First, run the development server:
+## Возможности
+
+- **Карта** — интерактивная карта на базе [Яндекс.Карт API v3](https://yandex.ru/dev/maps/)
+- **Маркеры** — два типа мест: запланированные и посещённые
+- **Фильтрация** — показ всех маркеров, только запланированных или только посещённых
+- **Поиск** — подсказки и переход к локации через Yandex Suggest
+- **Карточка поездки** — название, даты, рейтинг, статус и описание в Markdown (редактор [MDXEditor](https://mdxeditor.dev/))
+- **Авторизация** — вход по email и паролю через [Supabase Auth](https://supabase.com/docs/guides/auth)
+
+## Стек
+
+| Категория         | Технологии                       |
+| ----------------- | -------------------------------- |
+| Фреймворк         | Next.js 16, React 19, TypeScript |
+| Стили             | Tailwind CSS 4                   |
+| UI                | Base UI                          |
+| Бэкенд / БД       | Supabase (PostgreSQL)            |
+| Карты             | Яндекс.Карты API v3              |
+| Пакетный менеджер | pnpm                             |
+
+## Быстрый старт
+
+### Требования
+
+- Node.js 20+
+- Проект в [Supabase](https://supabase.com/)
+- API-ключи [Яндекс.Карт](https://developer.tech.yandex.ru/)
+
+### Запуск
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
