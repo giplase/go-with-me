@@ -1,3 +1,4 @@
+import Exit from "./Exit"
 import ModeToggleGroup from "./ModeToggleGroup"
 import Search from "./Search"
 
@@ -6,6 +7,7 @@ export default function Toolbar() {
     <div className="absolute top-7 right-7 z-100 flex gap-1.5">
       <ModeToggleGroup />
       <Search />
+      <Exit />
     </div>
   )
 }

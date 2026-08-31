@@ -66,7 +66,7 @@ export default function Search() {
       >
         <Autocomplete.Input
           placeholder="Поиск"
-          className="border-border text-text-main box-border rounded-lg border-3 p-1.25 outline-none"
+          className="border-border text-text-main focus:outline-text-main box-border rounded-lg border-3 p-1.25 focus:outline"
         />
 
         <Autocomplete.Portal hidden={!status && searchValue === ""}>
