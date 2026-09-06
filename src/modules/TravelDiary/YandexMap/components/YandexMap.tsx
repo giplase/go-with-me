@@ -12,7 +12,7 @@ const ZOOM = 9
 
 const LOCATION: YMapCenterZoomLocation = {
   center: [37.61556, 55.7522],
-  zoom: 5,
+  zoom: 4,
 }
 
 export interface YmapsInterface {
