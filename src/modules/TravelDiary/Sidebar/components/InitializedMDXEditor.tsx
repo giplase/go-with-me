@@ -29,7 +29,7 @@ export default function InitializedMDXEditor({
       {...props}
       ref={editorRef}
       className="dark-theme markdown-editor"
-      contentEditableClassName="prose prose-invert max-w-none"
+      contentEditableClassName="prose max-w-none"
       plugins={[
         headingsPlugin(),
         listsPlugin(),

@@ -25,8 +25,8 @@ body {
   color: theme(--color-text-main);
 }
 
-@utility prose-invert {
-  --tw-prose-body: theme(--color-background);
+@utility prose {
+  --tw-prose-body: theme(--color-text-main);
   --tw-prose-headings: theme(--color-text-main);
   --tw-prose-bold: theme(--color-text-main);
   --tw-prose-links: theme(--color-accent);
@@ -37,7 +37,7 @@ body {
   --tw-prose-counters: theme(--color-text-sub);
   --tw-prose-code: theme(--color-accent);
   --tw-prose-pre-bg: theme(--color-hover);
-}
+  }
 
 .markdown-editor,
 .markdown-editor.mdxeditor-popup-container {
@@ -101,21 +101,21 @@ body {
   background-color: theme(--color-hover);
   color: theme(--color-text-main);
 }
-.markdown-editor {
+.body {
   scrollbar-width: thin;
   scrollbar-color: theme(--color-border) theme(--color-hover);
 }
-.markdown-editor::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 8px;
 }
-.markdown-editor::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: theme(--color-hover);
   border-radius: 4px;
 }
-.markdown-editor::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: theme(--color-border);
   border-radius: 4px;
 }
-.markdown-editor::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background: theme(--color-border-hover);
 }

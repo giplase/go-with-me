@@ -88,7 +88,7 @@ export default function TripCard() {
               <MarkdownViewer markdown={tripData.description} />
             </div>
           )}
-          {isPending && <div className="bg-pending h-[calc(100vh-23rem)] w-full animate-pulse rounded-md"></div>}
+          {isPending && <div className="bg-pending h-[calc(100vh-17rem)] w-full animate-pulse rounded-md"></div>}
           <div className="flex w-full justify-center gap-2.5">
             <button
               type="submit"
